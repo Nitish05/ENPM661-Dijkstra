@@ -145,8 +145,8 @@ goal_node = (int(Xg), int(Yg))
 
 start_time = time.time()
 
-cv2.circle(canvas, start_node, 2, (0, 0, 255), -1)
-cv2.circle(canvas, goal_node, 2, (0, 255, 0), -1)
+cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
+cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
 
 for j in  range(25):
     out.write(canvas)

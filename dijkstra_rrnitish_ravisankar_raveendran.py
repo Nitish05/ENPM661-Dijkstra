@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 from queue import PriorityQueue
-import cv2
-import numpy as np
 import time
+import random
 
 canvas_height = 501
 canvas_width = 1201
@@ -66,6 +65,15 @@ cv2.fillPoly(canvas, [pts_c], color_c)
 cv2.fillPoly(canvas, [pts], color)
 
 out = cv2.VideoWriter('output.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
+
+def random_node_gen():
+    x = random.randint(0, canvas_width - 1)
+    y = random.randint(0, canvas_height - 1)
+    while not is_free(x, y):
+        x = random.randint(0, canvas_width - 1)
+        y = random.randint(0, canvas_height - 1)
+        y = abs(500 - y)
+    return (x, y)
 
 def is_free(x, y):
     return all(canvas[y, x] == free_space_color) or all(canvas[y, x] == (0, 255, 0)) or all(canvas[y, x] == (0, 0, 255))
@@ -135,15 +143,26 @@ def visualize_path(path):
 
 Xi = input("Enter the start node X: ")
 Yi = input("Enter the start node Y: ")
-Yi = abs(500 - int(Yi))
-start_node = (int(Xi), int(Yi))
+
 
 Xg = input("Enter the goal node X: ")
 Yg = input("Enter the goal node Y: ")
-Yg = abs(500 - int(Yg))
-goal_node = (int(Xg), int(Yg))
 
-start_time = time.time()
+if not Xi.isdigit() or not Yi.isdigit() or not Xg.isdigit() or not Yg.isdigit():
+    print("Picking a Random Start and Goal Node")
+    start_node = random_node_gen()  
+    goal_node = random_node_gen()
+    print("Start Node: ", start_node)
+    print("Goal Node: ", goal_node)
+else:
+    Yi = abs(500 - int(Yi))
+    start_node = (int(Xi), int(Yi))
+
+    Yg = abs(500 - int(Yg))
+    goal_node = (int(Xg), int(Yg))
+
+    print("Start Node: ", start_node)
+    print("Goal Node: ", goal_node)
 
 cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
 cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
@@ -160,6 +179,7 @@ elif not is_free(*start_node):
 elif not is_free(*goal_node):
     print("Goal node is inside an obstacle.")
 else:
+    start_time = time.time()
     came_from, cost_so_far = dijkstra(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)

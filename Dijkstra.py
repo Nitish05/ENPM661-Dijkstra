@@ -67,7 +67,7 @@ cv2.fillPoly(canvas, [pts], color)
 out = cv2.VideoWriter('output.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
 
 def is_free(x, y):
-    return all(canvas[y, x] == free_space_color) 
+    return all(canvas[y, x] == free_space_color) or all(canvas[y, x] == (0, 255, 0)) or all(canvas[y, x] == (0, 0, 255))
 
 def get_neighbors(node):
     x, y = node
@@ -104,7 +104,7 @@ def dijkstra(start, goal):
                 canvas[next_node[1], next_node[0]] = (255, 0, 0)
                 came_from[next_node] = current_node
                 count += 1
-                if count%1000 == 0:
+                if count%1200 == 0:
                     out.write(canvas)
     return came_from, cost_so_far
 
@@ -122,7 +122,7 @@ def visualize_path(path):
     count = 0
     for node in path:
         x, y = node
-        cv2.circle(canvas, (x, y), 1, (0, 0, 255), -1) 
+        cv2.circle(canvas, (x, y), 2, (0, 0, 255), -1) 
         count += 1
         if count%10 == 0:
             out.write(canvas)
@@ -143,6 +143,12 @@ Xg = input("Enter the goal node X: ")
 Yg = input("Enter the goal node Y: ")
 Yg = abs(500 - int(Yg))
 goal_node = (int(Xg), int(Yg))
+
+cv2.circle(canvas, start_node, 2, (0, 0, 255), -1)
+cv2.circle(canvas, goal_node, 2, (0, 255, 0), -1)
+
+for j in  range(25):
+    out.write(canvas)
 
 if start_node[0] < 0 or start_node[0] >= canvas_width or start_node[1] < 0 or start_node[1] >= canvas_height:
     print("Start node is out of bounds.")

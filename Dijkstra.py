@@ -132,8 +132,6 @@ def visualize_path(path):
 
     cv2.imshow('Path', canvas)
     out.release()
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
 Xi = input("Enter the start node X: ")
 Yi = input("Enter the start node Y: ")
@@ -165,8 +163,10 @@ else:
     came_from, cost_so_far = dijkstra(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)
+
 end_time = time.time()
 execution_time = end_time - start_time
-print("Execution time: ", execution_time, "seconds")
+
+print("Execution time: %.4f seconds" % execution_time)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

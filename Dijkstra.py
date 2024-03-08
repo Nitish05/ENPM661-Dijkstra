@@ -3,6 +3,7 @@ import numpy as np
 from queue import PriorityQueue
 import cv2
 import numpy as np
+import time
 
 canvas_height = 501
 canvas_width = 1201
@@ -144,6 +145,8 @@ Yg = input("Enter the goal node Y: ")
 Yg = abs(500 - int(Yg))
 goal_node = (int(Xg), int(Yg))
 
+start_time = time.time()
+
 cv2.circle(canvas, start_node, 2, (0, 0, 255), -1)
 cv2.circle(canvas, goal_node, 2, (0, 255, 0), -1)
 
@@ -162,3 +165,6 @@ else:
     came_from, cost_so_far = dijkstra(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)
+end_time = time.time()
+execution_time = end_time - start_time
+print("Execution time: ", execution_time, "seconds")

@@ -132,8 +132,8 @@ def visualize_path(path):
 
     cv2.imshow('Path', canvas)
     out.release()
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
 Xi = input("Enter the start node X: ")
 Yi = input("Enter the start node Y: ")
@@ -168,3 +168,5 @@ else:
 end_time = time.time()
 execution_time = end_time - start_time
 print("Execution time: ", execution_time, "seconds")
+cv2.waitKey(0)
+cv2.destroyAllWindows()

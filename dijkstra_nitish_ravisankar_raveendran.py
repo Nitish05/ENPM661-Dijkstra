@@ -17,7 +17,7 @@ def draw_rectangle(center, width, height, color, thickness = -1):
     bottom_right = (int(center[0] + width/2), int(center[1] + height/2))
     cv2.rectangle(canvas, top_left, bottom_right, color, thickness)
 
-draw_rectangle((canvas_width / 2, canvas_height / 2), 1195.5, 495.5, (127, 127, 127), thickness=5)  # Draw the boundary clearance rectangle
+draw_rectangle((canvas_width / 2, canvas_height / 2), 1196, 496, (127, 127, 127), thickness=5)  # Draw the boundary clearance rectangle
 
 
 # Define the clearance regions
@@ -168,7 +168,7 @@ while True:
             print("Start node is inside an obstacle")
     else:
         print("Start node is out of bounds.")
-        print("The start node should be within the canvas dimensions (0-1200, 0-500) and not inside an obstacle.")
+        print("The start node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.")
 
 # Ask the user for the goal node
 while True:
@@ -183,7 +183,7 @@ while True:
             print("Goal node is inside an obstacle")
     else:
         print("Goal node is inside an obstacle or out of bounds.")
-        print("The goal node should be within the canvas dimensions (0-1200, 0-500) and not inside an obstacle.")
+        print("The goal node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.")
 
 
 # Print the start and goal nodes

@@ -71,7 +71,7 @@ color = (0, 0, 0)
 cv2.fillPoly(canvas, [pts_c], color_c)
 cv2.fillPoly(canvas, [pts], color)
 
-cv2.imshow('Canvas', canvas)  # Display the canvas
+# cv2.imshow('Canvas', canvas)  # Display the canvas
 cv2.waitKey(0)
 
 # Define the video writer
@@ -157,6 +157,20 @@ def visualize_path(path):
 
 # Ask the user for the start node
 while True:
+    print(''' 
+          
+        ▓█████▄  ██▓ ▄▄▄██▀▀▀██ ▄█▀  ██████ ▄▄▄█████▓ ██▀███   ▄▄▄      
+        ▒██▀ ██▌▓██▒   ▒██   ██▄█▒ ▒██    ▒ ▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    
+        ░██   █▌▒██▒   ░██  ▓███▄░ ░ ▓██▄   ▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  
+        ░▓█▄   ▌░██░▓██▄██▓ ▓██ █▄   ▒   ██▒░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ 
+        ░▒████▓ ░██░ ▓███▒  ▒██▒ █▄▒██████▒▒  ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒
+        ▒▒▓  ▒ ░▓   ▒▓▒▒░  ▒ ▒▒ ▓▒▒ ▒▓▒ ▒ ░  ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░
+        ░ ▒  ▒  ▒ ░ ▒ ░▒░  ░ ░▒ ▒░░ ░▒  ░ ░    ░      ░▒ ░ ▒░  ▒   ▒▒ ░
+        ░ ░  ░  ▒ ░ ░ ░ ░  ░ ░░ ░ ░  ░  ░    ░        ░░   ░   ░   ▒   
+        ░     ░   ░   ░  ░  ░         ░              ░           ░  ░
+ ░                                                              
+          ''')
+    print("\nThe start node and goal node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.\n")
     Xi = input("Enter the start node X: ")
     Yi = input("Enter the start node Y: ")
     Xi = int(Xi)
@@ -168,7 +182,6 @@ while True:
             print("Start node is inside an obstacle")
     else:
         print("Start node is out of bounds.")
-        print("The start node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.")
 
 # Ask the user for the goal node
 while True:
@@ -183,7 +196,6 @@ while True:
             print("Goal node is inside an obstacle")
     else:
         print("Goal node is inside an obstacle or out of bounds.")
-        print("The goal node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.")
 
 
 # Print the start and goal nodes

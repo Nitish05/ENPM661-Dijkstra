@@ -21,6 +21,7 @@ python dijkstra_nitish_ravisankar_raveendran.py
 - If the start and goal coordinates are invalid, the script will prompt the user to enter the coordinates again.
 - The script will also display the time taken to find the path and cost of the path.
 - The script will also display the path in the map.
+- The white cells represent the free space, the black cells represent the obstacles, the gray cells represent the clearance (5mm in this case 5 pixels wide), the red cell represents the start node, the green cell represents the goal node, the blue cells represent the nodes visited and the red cells represent the path.
 - The script will also save the path and the node creation as a video as dijkstra_nitish_ravisankar_raveendran.mp4 in the current directory.
 - In the video, the start node is displayed in red, the goal node is displayed in green, the nodes visited are displayed in blue and the path is displayed in red.
 - The script should not take more than 2 minutes to find the path.

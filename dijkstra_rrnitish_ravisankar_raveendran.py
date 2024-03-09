@@ -172,12 +172,12 @@ else:
     Yg = abs(500 - int(Yg))
     goal_node = (int(Xg), int(Yg))
 
-
+start_time = time.time()
 
 for j in  range(25):
     out.write(canvas)
 
-start_time = time.time()
+
 
 if start_node[0] < 0 or start_node[0] >= canvas_width or start_node[1] < 0 or start_node[1] >= canvas_height:
     print("Start node is out of bounds.")

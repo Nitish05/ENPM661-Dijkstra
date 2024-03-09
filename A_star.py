@@ -115,6 +115,7 @@ def a_star(start, goal):
         current_cost, current_node = pq.get()
         if current_node == goal:
             print("Goal Reached")
+            cv2.destroyAllWindows()
             break
         for next_node, cost in get_neighbors(current_node):
             cost_to_go = octile_distance(next_node[0], next_node[1], goal[0], goal[1])
@@ -129,6 +130,9 @@ def a_star(start, goal):
                 came_from[next_node] = current_node
                 count += 1
                 if count%1200 == 0:
+                    cv2.imshow('A*', canvas)
+                    cv2.waitKey(1)
+                    
                     out.write(canvas)
     return came_from, cost_so_far
 
@@ -140,9 +144,13 @@ def reconstruct_path(came_from, start, goal):
         path.append(current)
         cv2.circle(canvas, current, 2, (255, 255, 255), -1)
         if count%30 == 0:
+            cv2.imshow('Path Reconstruction', canvas)
+            cv2.waitKey(1)
+            
             out.write(canvas)
         count += 1
         current = came_from[current]
+    cv2.destroyAllWindows()
     path.append(start)
     path.reverse()
     return path
@@ -154,7 +162,10 @@ def visualize_path(path):
         cv2.circle(canvas, (x, y), 2, (0, 0, 255), -1) 
         count += 1
         if count%15 == 0:
+            cv2.imshow('Path Visualization', canvas)
+            cv2.waitKey(1)
             out.write(canvas)
+    cv2.destroyAllWindows()       
     for i in range(30):
         out.write(canvas)
 
@@ -186,11 +197,12 @@ else:
     Yg = abs(500 - int(Yg))
     goal_node = (int(Xg), int(Yg))
 
-cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
-cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
+start_time = time.time()
 
 for j in  range(25):
     out.write(canvas)
+
+
 
 if start_node[0] < 0 or start_node[0] >= canvas_width or start_node[1] < 0 or start_node[1] >= canvas_height:
     print("Start node is out of bounds.")
@@ -201,7 +213,9 @@ elif not is_free(*start_node):
 elif not is_free(*goal_node):
     print("Goal node is inside an obstacle.")
 else:
-    start_time = time.time()
+    cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
+    cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
+    
     came_from, cost_so_far = a_star(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)

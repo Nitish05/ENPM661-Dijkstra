@@ -172,11 +172,12 @@ else:
     Yg = abs(500 - int(Yg))
     goal_node = (int(Xg), int(Yg))
 
-cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
-cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
+
 
 for j in  range(25):
     out.write(canvas)
+
+start_time = time.time()
 
 if start_node[0] < 0 or start_node[0] >= canvas_width or start_node[1] < 0 or start_node[1] >= canvas_height:
     print("Start node is out of bounds.")
@@ -187,7 +188,9 @@ elif not is_free(*start_node):
 elif not is_free(*goal_node):
     print("Goal node is inside an obstacle.")
 else:
-    start_time = time.time()
+    cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)
+    cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)
+    
     came_from, cost_so_far = dijkstra(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)

@@ -64,7 +64,7 @@ color = (0, 0, 0)
 cv2.fillPoly(canvas, [pts_c], color_c)
 cv2.fillPoly(canvas, [pts], color)
 
-out = cv2.VideoWriter('dijkstra.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
+out = cv2.VideoWriter('A_star.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
 
 def random_node_gen():
     x = random.randint(0, canvas_width - 1)
@@ -93,11 +93,22 @@ def get_neighbors(node):
             neighbors.append(((nx, ny), cost))
     return neighbors
 
-def dijkstra(start, goal):
+D = 1.0  
+D2 = 1.4 
+
+def octile_distance(x1, y1, x2, y2):
+    dx = abs(x1 - x2)
+    dy = abs(y1 - y2)
+    return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+
+def a_star(start, goal):
     pq = PriorityQueue()
     pq.put((0, start))
     came_from = {start: None}
-    cost_so_far = {start: 0}
+    cost_to_goal = octile_distance(start[0], start[1], goal[0], goal[1])
+    # cost_to_goal = ((goal[0] - start[0])**2 + (goal[1] - start[1])**2)**0.5
+    # cost_to_goal = abs(goal[0] - start[0]) + abs(goal[1] - start[1])
+    cost_so_far = {start: cost_to_goal}
     count =0
 
     while not pq.empty():
@@ -106,7 +117,10 @@ def dijkstra(start, goal):
             print("Goal Reached")
             break
         for next_node, cost in get_neighbors(current_node):
-            new_cost = current_cost + cost
+            cost_to_go = octile_distance(next_node[0], next_node[1], goal[0], goal[1])
+            # cost_to_go = ((goal[0] - next_node[0])**2 + (goal[1] - next_node[1])**2)**0.5
+            # cost_to_go = abs(goal[0] - next_node[0]) + abs(goal[1] - next_node[1])
+            new_cost = current_cost + cost + cost_to_go
             if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
                 cost_so_far[next_node] = new_cost
                 priority = new_cost
@@ -185,7 +199,7 @@ elif not is_free(*goal_node):
     print("Goal node is inside an obstacle.")
 else:
     start_time = time.time()
-    came_from, cost_so_far = dijkstra(start_node, goal_node)
+    came_from, cost_so_far = a_star(start_node, goal_node)
     path = reconstruct_path(came_from, start_node, goal_node)
     visualize_path(path)
 

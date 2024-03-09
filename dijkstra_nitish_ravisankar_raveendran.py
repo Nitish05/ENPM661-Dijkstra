@@ -12,10 +12,13 @@ obstacle_color = (0, 0, 0)
 canvas = np.ones((canvas_height, canvas_width, 3), dtype="uint8") * 255   # Create a white canvas
 
 # Function to draw a rectangle
-def draw_rectangle(center, width, height, color):
+def draw_rectangle(center, width, height, color, thickness = -1):
     top_left = (int(center[0] - width/2), int(center[1] - height/2))
     bottom_right = (int(center[0] + width/2), int(center[1] + height/2))
-    cv2.rectangle(canvas, top_left, bottom_right, color, -1)
+    cv2.rectangle(canvas, top_left, bottom_right, color, thickness)
+
+draw_rectangle((canvas_width / 2, canvas_height / 2), 1195.5, 495.5, (127, 127, 127), thickness=5)  # Draw the boundary clearance rectangle
+
 
 # Define the clearance regions
 clearance = [
@@ -67,6 +70,9 @@ color = (0, 0, 0)
 
 cv2.fillPoly(canvas, [pts_c], color_c)
 cv2.fillPoly(canvas, [pts], color)
+
+cv2.imshow('Canvas', canvas)  # Display the canvas
+cv2.waitKey(0)
 
 # Define the video writer
 out = cv2.VideoWriter('dijkstra_nitish_ravisankar_raveendran.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))

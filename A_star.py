@@ -114,6 +114,7 @@ def a_star(start, goal):
     while not pq.empty():
         current_cost, current_node = pq.get()
         if current_node == goal:
+            print("Cost to Goal: " , cost_so_far[goal])
             print("Goal Reached")
             cv2.destroyAllWindows()
             break
@@ -144,7 +145,7 @@ def reconstruct_path(came_from, start, goal):
         path.append(current)
         cv2.circle(canvas, current, 2, (255, 255, 255), -1)
         if count%30 == 0:
-            cv2.imshow('Path Reconstruction', canvas)
+            cv2.imshow('A*', canvas)
             cv2.waitKey(1)
             
             out.write(canvas)
@@ -162,7 +163,7 @@ def visualize_path(path):
         cv2.circle(canvas, (x, y), 2, (0, 0, 255), -1) 
         count += 1
         if count%15 == 0:
-            cv2.imshow('Path Visualization', canvas)
+            cv2.imshow('A*', canvas)
             cv2.waitKey(1)
             out.write(canvas)
     cv2.destroyAllWindows()       

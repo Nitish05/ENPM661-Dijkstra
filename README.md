@@ -1,27 +1,23 @@
-# Project Title 
-A brief description of your project.
+## Dijkstra's Algorithm (ENPM 661 - Planning for Autonomous Robots)
+This repository contains the implementation of Dijkstra's Algorithm for path planning of a point robot in a 2D grid space. The algorithm is implemented in Python and the visualization is done using the opencv library.
 
-## Getting Started
-Instructions on how to get a copy of the project up and running on your local machine.
-
-### Prerequisites
-List any software, libraries, or hardware needed to run this project.
- Lists : 
- - **List 1** : some description
- - **List 2** : some description
-
-
-### Installing
-A step-by-step guide on how to install the project.
+## Dependencies
+- Python 3.7
+- OpenCV
+- Numpy
+- Queue
+- Time
 
 ## Usage
-Instructions on how to use the project or its features.
-
-## Contributing
-Guidelines on how to contribute to the project.
-
-## License
-This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-Mention anyone who contributed to the project or inspired you. 
+- Clone the repository
+- Execute the dijkstra script using the following command: 
+```bash
+python dijkstra_nitish_ravisankar_raveendran.py
+```
+- The script will prompt the user to enter the start and goal coordinates. The origin (0,0) is at the bottom left corner of the grid space.
+- If the start and goal coordinates are valid, the script will display the path from the start to the goal using the Dijkstra's Algorithm.
+- If the start and goal coordinates are invalid, the script will prompt the user to enter the coordinates again.
+- The script will also display the time taken to find the path and cost of the path.
+- The script will also display the path in the map.
+- The script will also save the path and the node creation as a video in the current directory.
+- The script should not take more than 2 minutes to find the path.

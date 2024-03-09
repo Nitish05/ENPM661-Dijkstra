@@ -69,7 +69,7 @@ cv2.fillPoly(canvas, [pts_c], color_c)
 cv2.fillPoly(canvas, [pts], color)
 
 # Define the video writer
-out = cv2.VideoWriter('dijkstra.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
+out = cv2.VideoWriter('dijkstra_nitish_ravisankar_raveendran.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))
 
 # Function to check if a node is free
 def is_free(x, y):

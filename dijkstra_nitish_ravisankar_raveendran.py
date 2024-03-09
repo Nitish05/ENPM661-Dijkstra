@@ -191,11 +191,13 @@ goal_node = (int(Xg), int(Yg))
 
 start_time = time.time()    # Start the timer
 
-for j in  range(25):
-    out.write(canvas)
 
 cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)  # Draw the start node
 cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)   # Draw the goal node
+
+for j in  range(25):
+    out.write(canvas)
+    
 # Run Dijkstra's algorithm
 came_from, cost_so_far = dijkstra(start_node, goal_node)
 path = reconstruct_path(came_from, start_node, goal_node)

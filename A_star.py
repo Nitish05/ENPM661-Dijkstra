@@ -70,7 +70,7 @@ def random_node_gen():
     x = random.randint(0, canvas_width - 1)
     y = random.randint(0, canvas_height - 1)
     # y = abs(500 - y)
-    while not is_free(x, y):
+    while not is_free(x, abs(500 - y)):
         x = random.randint(0, canvas_width - 1)
         y = random.randint(0, canvas_height - 1)
         # y = abs(500 - y)

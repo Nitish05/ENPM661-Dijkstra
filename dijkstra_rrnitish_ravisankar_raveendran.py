@@ -69,11 +69,11 @@ out = cv2.VideoWriter('dijkstra.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canv
 def random_node_gen():
     x = random.randint(0, canvas_width - 1)
     y = random.randint(0, canvas_height - 1)
-    y = abs(500 - y)
+    # y = abs(500 - y)
     while not is_free(x, y):
         x = random.randint(0, canvas_width - 1)
         y = random.randint(0, canvas_height - 1)
-        y = abs(500 - y)
+        # y = abs(500 - y)
     return (x, y)
 
 def is_free(x, y):
@@ -156,10 +156,13 @@ Yg = input("Enter the goal node Y: ")
 
 if not Xi.isdigit() or not Yi.isdigit() or not Xg.isdigit() or not Yg.isdigit():
     print("Picking a Random Start and Goal Node")
-    start_node = random_node_gen()  
-    goal_node = random_node_gen()
-    print("Start Node: ", start_node)
-    print("Goal Node: ", goal_node)
+    start_node_er = random_node_gen()  
+    goal_node_er = random_node_gen()
+    
+    print("Start Node: ", start_node_er)
+    print("Goal Node: ", goal_node_er)
+    start_node = (start_node_er[0], abs(500 - start_node_er[1]))
+    goal_node = (goal_node_er[0], abs(500 - goal_node_er[1]))
 else:
     print("Start Node: ", (int(Xi), int(Yi)))
     print("Goal Node: ", (int(Xg), int(Yg)))

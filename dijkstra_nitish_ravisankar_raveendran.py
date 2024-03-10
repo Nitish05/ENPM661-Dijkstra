@@ -51,7 +51,7 @@ def clearance(x, y, clearance):
         (x >= 900 - clearance and x <= 1100 + clearance and y >= 375 - clearance and y <= 450 + clearance),
         (x >= 1020 - clearance and x <= 1100 + clearance and y >= 50 - clearance and y <= 450 + clearance),
         (x >= Xc - R and x <= Xc + R and y <= ((np.pi/6)*(x-(Xc-R)))+325 + clearance and y <= -((np.pi/6)*(x-(Xc+R)))+325 + clearance and y >= -((np.pi/6)*(x-(Xc-R)))+175 - clearance and y >= ((np.pi/6)*(x-(Xc+R)))+175 - clearance),
-        (x <= clearance or x >= canvas_width - clearance or y <= clearance or y >= canvas_height - clearance),
+        (x <= clearance or x >= canvas_width - clearance or y <= clearance or y >= canvas_height - clearance), # Add clearance to the edges of the canvas
     ]
     return any(clearance_zones)
 
@@ -108,7 +108,7 @@ def dijkstra(start, goal):
                 canvas[next_node[1], next_node[0]] = (255, 0, 0)
                 came_from[next_node] = current_node
                 count += 1
-                if count%1200 == 0:
+                if count%3000 == 0:
                     out.write(canvas)
     return came_from, cost_so_far
 
@@ -141,7 +141,7 @@ def visualize_path(path):
         out.write(canvas)
 
     cv2.imshow('Path', canvas)
-    out.release()
+    # out.release()
 
 
 # Ask the user for the start node
@@ -213,6 +213,7 @@ visualize_path(path)
 end_time = time.time()  # End the timer
 execution_time = end_time - start_time
 
+out.release()
 print("Execution time: %.4f seconds" % execution_time)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -4,75 +4,64 @@ import numpy as np
 from queue import PriorityQueue
 import time
 
-# Define the canvas dimensions and colors
-canvas_height = 501
-canvas_width = 1201
-free_space_color = (255, 255, 255)
+# Canvas dimensions
+canvas_height = 500
+canvas_width = 1200
+
+# Define the colors
+clearance_color = (127, 127, 127)
 obstacle_color = (0, 0, 0)
-canvas = np.ones((canvas_height, canvas_width, 3), dtype="uint8") * 255   # Create a white canvas
+free_space_color = (255, 255, 255)
 
-# Function to draw a rectangle
-def draw_rectangle(center, width, height, color, thickness = -1):
-    top_left = (int(center[0] - width/2), int(center[1] - height/2))
-    bottom_right = (int(center[0] + width/2), int(center[1] + height/2))
-    cv2.rectangle(canvas, top_left, bottom_right, color, thickness)
+clearance_distance = 5
 
-draw_rectangle((canvas_width / 2, canvas_height / 2), 1196, 496, (127, 127, 127), thickness=5)  # Draw the boundary clearance rectangle
+# Initialize a white canvas
+canvas = np.ones((canvas_height, canvas_width, 3), dtype="uint8") * 255
 
+# Define obstacles using half plane model
+def obstacles(node):
+    x, y = node
+    Hex_center = (650, 250)
+    Xc, Yc = Hex_center
+    y = abs(y - canvas_height)
+    side_length = 150
+    R = np.cos(np.pi / 6) * side_length
+    obstacles = [
+        (x >= 100 and x <= 175 and y >= 100 and y <= 500), 
+        (x >= 275 and x <= 350 and y >= 0 and y <= 400),
+        (x >= 900 and x <= 1100 and y >= 50 and y <= 125),
+        (x >= 900 and x <= 1100 and y >= 375 and y <= 450),
+        (x >= 1020 and x <= 1100 and y >= 50 and y <= 450),
+        (x >= Xc - R and x <= Xc + R and y <= ((np.pi/6)*(x-(Xc-R)))+325 and y <= -((np.pi/6)*(x-(Xc+R)))+325 and y >= -((np.pi/6)*(x-(Xc-R)))+175 and y >= ((np.pi/6)*(x-(Xc+R)))+175),
+        
+    ]
+    return any(obstacles)
 
-# Define the clearance regions
-clearance = [
-    ((137.5, 200), 85, 410),
-    ((312.3, 300), 85, 410),
-    ((1000, 87.5), 210, 85),
-    ((1000, 412.5), 210, 85),
-    ((1060, 250), 90, 240),
-]
+# Define clearance zones
+def clearance(x, y, clearance):
+    Hex_center = (650, 250)
+    Xc, Yc = Hex_center
+    y = abs(y - canvas_height)
+    side_length = 150 
+    R = (np.cos(np.pi / 6) * side_length)  + clearance
+    clearance_zones = [
+        (x >= 100 - clearance and x <= 175 + clearance and y >= 100 - clearance and y <= 500 + clearance),
+        (x >= 275 - clearance and x <= 350 + clearance and y >= 0 - clearance and y <= 400 + clearance),
+        (x >= 900 - clearance and x <= 1100 + clearance and y >= 50 - clearance and y <= 125 + clearance),
+        (x >= 900 - clearance and x <= 1100 + clearance and y >= 375 - clearance and y <= 450 + clearance),
+        (x >= 1020 - clearance and x <= 1100 + clearance and y >= 50 - clearance and y <= 450 + clearance),
+        (x >= Xc - R and x <= Xc + R and y <= ((np.pi/6)*(x-(Xc-R)))+325 + clearance and y <= -((np.pi/6)*(x-(Xc+R)))+325 + clearance and y >= -((np.pi/6)*(x-(Xc-R)))+175 - clearance and y >= ((np.pi/6)*(x-(Xc+R)))+175 - clearance),
+        (x <= clearance or x >= canvas_width - clearance or y <= clearance or y >= canvas_height - clearance),
+    ]
+    return any(clearance_zones)
 
-# Define the obstacle regions
-obstacle = [
-    ((137.5, 200), 75, 400),
-    ((312.3, 300), 75, 400),
-    ((1000, 87.5), 200, 75),
-    ((1000, 412.5), 200, 75),
-    ((1060, 250),80, 250),
-]
-
-for center, width, height in clearance:
-    draw_rectangle(center, width, height, (127, 127, 127)) 
-
-for center, width, height in obstacle:
-    draw_rectangle(center, width, height, (0, 0, 0))
-
-center = (650, 250)  # Define the center of the hexagon
-side_length = 150  # Define the side length of the hexagon
-radius_c = (side_length / (2 * np.sin(np.pi / 6))) + 5  # Define the radius of the clearance hexagon
-
-hex_c = []
-for i in range(6):
-    x_c = int(center[0] + radius_c * np.cos(i * 2 * np.pi / 6))
-    y_c = int(center[1] + radius_c * np.sin(i * 2 * np.pi / 6))
-    hex_c.append((x_c, y_c))
-    
-radius = (side_length / (2 * np.sin(np.pi / 6))) # Define the radius of the hexagon
-hex = []
-for j in range(6):
-    x = int(center[0] + radius * np.cos(j * 2 * np.pi / 6))
-    y = int(center[1] + radius * np.sin(j * 2 * np.pi / 6))
-    hex.append((x, y))
-
-pts_c = np.array(hex_c, np.int32)
-pts_c = pts_c.reshape((-1, 1, 2))
-color_c = (127, 127, 127)
-pts = np.array(hex, np.int32)
-pts = pts.reshape((-1, 1, 2))
-color = (0, 0, 0)
-
-cv2.fillPoly(canvas, [pts_c], color_c)
-cv2.fillPoly(canvas, [pts], color)
-
-# cv2.imshow('Canvas', canvas)  # Display the canvas
-cv2.waitKey(0)
+# Draw the obstacles and clearance zones on the canvas
+for x in range(canvas_width):
+    for y in range(canvas_height):
+        if clearance(x, y, clearance_distance):
+            canvas[y, x] = clearance_color
+        if obstacles((x, y)):
+            canvas[y, x] = obstacle_color
 
 # Define the video writer
 out = cv2.VideoWriter('dijkstra_nitish_ravisankar_raveendran.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (canvas_width, canvas_height))

@@ -16,6 +16,7 @@ This repository contains the implementation of Dijkstra's Algorithm for path pla
 python dijkstra_nitish_ravisankar_raveendran.py
 ```
 
+- The script will take few seconds to genrate the map.
 - The script will prompt the user to enter the start and goal coordinates. The origin (0,0) is at the bottom left corner of the grid space.
 - If the start and goal coordinates are valid, the script will display the path from the start to the goal using the Dijkstra's Algorithm.
 - If the start and goal coordinates are invalid, the script will prompt the user to enter the coordinates again.

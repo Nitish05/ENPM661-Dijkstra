@@ -5,8 +5,8 @@ from queue import PriorityQueue
 import time
 
 # Canvas dimensions
-canvas_height = 500
-canvas_width = 1200
+canvas_height = 501
+canvas_width = 1201
 
 # Define the colors
 clearance_color = (127, 127, 127)
@@ -96,6 +96,8 @@ def dijkstra(start, goal):
     while not pq.empty():  # Loop until the priority queue is empty
         current_cost, current_node = pq.get() 
         if current_node == goal:
+            cv2.circle(canvas, start_node, 1, (0, 0, 255), -1)  # Draw the start node
+            cv2.circle(canvas, goal_node, 1, (0, 255, 0), -1)   # Draw the goal node
             print("Cost to Goal: %.4f" %cost_so_far[goal])
             print("Goal Reached")
             break
@@ -119,8 +121,8 @@ def reconstruct_path(came_from, start, goal):
     count = 0
     while current != start:
         path.append(current)
-        cv2.circle(canvas, current, 2, (255, 255, 255), -1)
-        if count%30 == 0:
+        cv2.circle(canvas, current, 1, (255, 255, 255), -1)
+        if count%60 == 0:
             out.write(canvas)
         count += 1
         current = came_from[current]
@@ -133,9 +135,9 @@ def visualize_path(path):
     count = 0
     for node in path:
         x, y = node
-        cv2.circle(canvas, (x, y), 2, (0, 0, 255), -1) 
+        cv2.circle(canvas, (x, y), 1, (0, 0, 255), -1) 
         count += 1
-        if count%15 == 0:
+        if count%30 == 0:
             out.write(canvas)
     for i in range(30):
         out.write(canvas)
@@ -159,7 +161,7 @@ while True:
         ░     ░   ░   ░  ░  ░         ░              ░           ░  ░
  ░                                                              
           ''')
-    print("\nThe start node and goal node should be within the canvas dimensions (6-1194, 6-494) and not inside an obstacle.\n")
+    print("\nThe start node and goal node should be within the canvas dimensions (6-1195, 6-495) and not inside an obstacle.\n")
     Xi = input("Enter the start node X: ")
     Yi = input("Enter the start node Y: ")
     Xi = int(Xi)
@@ -186,7 +188,6 @@ while True:
     else:
         print("Goal node is inside an obstacle or out of bounds.")
 
-
 # Print the start and goal nodes
 print("Start Node: ", (int(Xi), int(Yi)))
 print("Goal Node: ", (int(Xg), int(Yg)))
@@ -198,9 +199,8 @@ goal_node = (int(Xg), int(Yg))
 
 start_time = time.time()    # Start the timer
 
-
-cv2.circle(canvas, start_node, 5, (0, 0, 255), -1)  # Draw the start node
-cv2.circle(canvas, goal_node, 5, (0, 255, 0), -1)   # Draw the goal node
+canvas[Yi, Xi] = (0, 0, 255)  # Draw the start node
+canvas[Yg, Xg] = (0, 255, 0)  # Draw the goal node
 
 for j in  range(25):
     out.write(canvas)

@@ -103,9 +103,10 @@ def octile_distance(x1, y1, x2, y2):
 
 def a_star(start, goal):
     pq = PriorityQueue()
-    pq.put((0, start))
-    came_from = {start: None}
     cost_to_goal = octile_distance(start[0], start[1], goal[0], goal[1])
+    pq.put((cost_to_goal, (start, 0)))
+    came_from = {start: None}
+    
     # cost_to_goal = ((goal[0] - start[0])**2 + (goal[1] - start[1])**2)**0.5
     # cost_to_goal = abs(goal[0] - start[0]) + abs(goal[1] - start[1])
     cost_so_far = {start: cost_to_goal}
@@ -113,22 +114,23 @@ def a_star(start, goal):
 
     while not pq.empty():
         current_cost, current_node = pq.get()
-        if current_node == goal:
+        if current_node[0] == goal:
             print("Cost to Goal: " , cost_so_far[goal])
             print("Goal Reached")
             cv2.destroyAllWindows()
             break
-        for next_node, cost in get_neighbors(current_node):
+        for next_node, cost in get_neighbors(current_node[0]):
             cost_to_go = octile_distance(next_node[0], next_node[1], goal[0], goal[1])
             # cost_to_go = ((goal[0] - next_node[0])**2 + (goal[1] - next_node[1])**2)**0.5
             # cost_to_go = abs(goal[0] - next_node[0]) + abs(goal[1] - next_node[1])
-            new_cost = current_cost + cost + cost_to_go
+            new_cost = current_node[1] + cost + cost_to_go
+            nc = current_node[1] + cost
             if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
-                cost_so_far[next_node] = new_cost
+                cost_so_far[next_node] = nc
                 priority = new_cost
-                pq.put((priority, next_node))
+                pq.put((priority, (next_node, nc)))
                 canvas[next_node[1], next_node[0]] = (255, 0, 0)
-                came_from[next_node] = current_node
+                came_from[next_node] = current_node[0]
                 count += 1
                 if count%1200 == 0:
                     cv2.imshow('A*', canvas)
